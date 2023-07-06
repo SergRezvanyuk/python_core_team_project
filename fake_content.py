@@ -21,7 +21,7 @@ def create_fake_users(fake, n=20):
         user["name"] = fake.name()
         user["phone"] = generate_phone_number()
         user["birthday"] = fake.date()
-        user["email"] = fake.ascii_free_email()
+        user["email"] = user["name"].lower().replace(" ", "_") + "@" + fake.free_email_domain()
         user["address"] = fake.street_address()
         users.append(user)
     return users
