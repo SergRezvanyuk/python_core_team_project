@@ -35,7 +35,7 @@ def random_user(users):
 if __name__ == '__main__':
     users = create_fake_users(fake)
     for user in users:
-        print("| {:<25}|{:^16}|{:^16}|{:<16}|{:<16}".format(user["name"], 
+        print("| {:<25}| {:^16}| {:^16}| {:<30}| {:<16}".format(user["name"], 
                                                             user["phone"], 
                                                             user["birthday"], 
                                                             user["email"], 
