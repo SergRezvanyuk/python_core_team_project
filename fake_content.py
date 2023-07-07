@@ -32,14 +32,14 @@ def random_user(users):
     return user
 
 
-if __name__ == '__main__':
-    users = create_fake_users(fake)
-    # for user in users:
-    #     print("| {:<25}| {:^16}| {:^16}| {:<30}| {:<16}".format(user["name"], 
-    #                                                         user["phone"], 
-    #                                                         user["birthday"], 
-    #                                                         user["email"], 
-    #                                                         user["address"]))
-    user_1 = random_user(users)
-    user_2 = random_user(users)
-    
+users = create_fake_users(fake)
+user_1 = random_user(users)
+user_2 = random_user(users)
+
+# if __name__ == '__main__':
+#     for user in users:
+#         print("| {:<25}| {:^16}| {:^16}| {:<30}| {:<16}".format(user["name"], 
+#                                                             user["phone"], 
+#                                                             user["birthday"], 
+#                                                             user["email"], 
+#                                                             user["address"]))
