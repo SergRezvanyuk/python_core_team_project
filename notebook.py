@@ -3,8 +3,6 @@ import os
 import pickle
 
 
-
-
 notes = {}
 max_nunber = 1
 
