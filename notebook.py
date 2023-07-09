@@ -1,69 +1,41 @@
-from datetime import datetime
-import os
-import pickle
-
-
-notes = {}
-max_nunber = 1
-
-
-file_name = 'Notes.bin'
-
-def new_record():
-    global max_id
-    print('Введіть текст:')
-    text = input()
-    if len(text)<2:
-        print("Занадто короткий запис.")
-        return
-
-    print('Тег') #'(або кілька, розділені комою)')
-    tag = input()
-    rec = [text, datetime.now()]
-    if len(tag)>0:
-        # tag = tag.split(',')
-        rec.append(tag)
-    max_id += 1
-    # print(rec)
-    notes.update({max_id:rec})
-    # print(notes)
-
-    
-
-    
-    
-
-def view_records():
+from tkinter import *
+def find_notes():
     pass
 
-def search_record():
+def add_note():
     pass
 
-def tag_record():
+def change_note():
     pass
 
-if os.path.exists(file_name):
-    with open(file_name, "rb") as fh:
-        notes = pickle.load(fh)
-    max_id = 0
-    for i in notes:
-        if i > max_id:
-            max_id = i
-else:
-    notes = {}
-    max_id = 0
+def del_note():
+    pass
+
+def exit_but():
+    tkn.destroy()
+
+def main():
+    global tkn
+    tkn = Tk()
+    tkn.geometry("500x500+550+150")
+    tkn.title("Персональний помічник. Нотатник")
+    tkn.config(background="white")
+    tit_nb = Label(tkn, text="Нотатки", bg="white", font='Arial 20', foreground="black")
+    but_nb_1 = Button(tkn, text="Знайти нотатки", command=find_notes, font="Arial 15", width=18)
+    but_nb_2 = Button(tkn, text="Додати запис", command=add_note, font="Arial 15", width=18)
+    but_nb_3 = Button(tkn, text="Змінити запис", command=change_note, font="Arial 15", width=18)
+    but_nb_4 = Button(tkn, text="Видалити запис", command=del_note, font="Arial 15", width=18)
+    but_nb_5 = Button(tkn, text="Вихід", command=exit_but, font="Arial 15", width=18)
+    footer_nb = Label(tkn, text="© Dream Team", bg="white", font='Arial 10', foreground="black")
+    tit_nb.place(x=200, y=50)
+    but_nb_1.place(x=150, y=150)
+    but_nb_2.place(x=150, y=200)
+    but_nb_3.place(x=150, y=250)
+    but_nb_4.place(x=150, y=300)
+    but_nb_5.place(x=150, y=350)
+    footer_nb.place(x=20, y=475)
+    tkn.mainloop()
 
 
-while True:
-    print("Робота із нотатками:")
-    choice = input("Н - новий запис, З - перегляд всіх записів, П - пошук, Т - пошук за тегом, інше - вихід.")
-    if choice == 'н' or choice == 'Н' or choice == 'y' or choice == 'Y':
-        new_record()
-    elif choice == 'з' or choice == 'З'  or choice == 'p' or choice == 'P':
-        view_records()
-    elif choice == 'п' or choice == 'П' or choice == 'g' or choice == 'G':
-        search_record()
-    elif choice == 'т' or choice == 'Т' or choice == 'n' or choice == 'N':
-        tag_record()
-    else:
-        break
+if __name__ == '__main__':
+    main()
