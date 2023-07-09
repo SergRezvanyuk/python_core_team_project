@@ -1,10 +1,14 @@
-from collections import UserDict
 import csv
+import re
+import pickle
+
+from get_upcoming_birthday import get_upcoming_birthdays
+from collections import UserDict
 from datetime import datetime
 from pathlib import Path
-import re
 from fake_content_2 import user_1
 
+file_name = "addressbook.bin"
 
 class Field:
     def __init__(self, value):
@@ -80,10 +84,8 @@ class Record:
         if phone:            
             self.phones.append(phone)
 
-
-
     def __str__(self):
-        return f'# {self.name}: {self.phones} ({self.birthday})' # '#' - selector
+        return f'# {self.name}: {self.phones} {self.birthday} {self.email} {self.address}' # '#' - selector
 
     def __repr__(self):
         return self.__str__()
@@ -108,8 +110,11 @@ class Record:
 
 
 class AddressBook(UserDict):
+    def __init__(self):
+        self.data = []
+    
     def add_record(self, record):
-        self.data[record.name.value] = record
+        self.data.append(record)
 
     def del_record(self, name):
         if name not in self.data:
@@ -118,38 +123,84 @@ class AddressBook(UserDict):
             self.data.pop(name)
 
 
+def write_ab(file_name, adr_book):    #write AddressBook in file
+    with open(file_name, 'w', newline=',', encoding='utf-8') as fh:
+        field_names = ['name', 'phone', 'birthday', 'email', 'address']
+        writer = csv.DictWriter(fh, fieldnames=field_names)
+        writer.writeheader()
+        for rec in adr_book.values():
+            writer.writerow(rec.__dict__)
+            
+def dump_file(addressbook):
+    with open(file_name, "wb") as fh:
+        pickle.dump(addressbook, fh)
 
-# *********************************************************************************************************
+def load_file():
+    with open(file_name, "rb") as fh:
+        addressbook = pickle.load(fh)
+    return addressbook
 
 
-def write_AB(path, adr_book):    #write AddressBook in file
-    if not len(adr_book):
-        print('AddressBook is empty!')
-    else:
-        field_names = list(adr_book.data[list(adr_book.data)[0]].__dict__) # if type(adr_book) = class AddressBook
-        # field_names = list(adr_book[list(adr_book)[0]].__dict__) # if type(adr_book) = dict
-        with open(path, 'w', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames=field_names)
-            writer.writeheader()
-            for rec in adr_book.values():
-                writer.writerow(rec.__dict__)
-
-
-def main():
-    path_file = Path(__file__).parent / 'AddressBook.csv'
-    user_name = Name(user_1["name"])
-    user_phone_1 = Phone(user_1["phone"])
-    user_phone_2 = Phone("236598545")
-    user_email = Email(user_1["email"])
-    user_birthday = Birthday(user_1["birthday"])
-    user_address = user_1["address"]
+def name_is_free(name):
+    names = []
+    with open(file_name, newline=',') as fh:
+        spam_reader = csv.reader(fh)
+        for raw in spam_reader:
+            names.append(raw[1])
+        
+    if name in names:
+        return False
     
-    record = Record(user_name, user_phone_1, user_birthday, user_email)
+    return True
+        
+
+def create_record():
+    while True:
+        name = input("Введіть ім'я контакту\n>_")
+        if name_is_free(name):
+            name = Name(name)
+            break
+        else:
+            print("Такий контакт вже існує!")
+            continue
+    
+    phone = input("Введіть номер телефону\n>_")
+    phone = Phone(phone) or None
+    
+    email = input("Введіть електронну пошту\n>_")
+    email = Email(email) or None
+    
+    birthday = input("Введіть дату народження у форматі дд/мм/рррр\n>_")
+    birthday = Birthday(birthday) or None
+    
+    address = input("Введіть адресу\n>_")
+    address = Address(address) or None
+    
+    contact = Record(name, phone, birthday, email, address)
+    
+    return contact
+    
+
+def users(addressbook):
+    
+
+
+def run_addressbook():
     ab = AddressBook()
-    ab.add_record(record)
-    print(ab)
-    write_AB(path_file, ab)
+    print("Вітаю!")
+    while True:
+        command = input(">_ ")
+        match command:
+            case "створити контакт":
+                contact = create_record()
+                ab.add_record(contact)
+                print("Контакт створено!")
+            case "привітання":
+                users = 
+                get_upcoming_birthdays(users)
+                
+       
     
 
 if __name__ == "__main__":
-    main()
+    run_addressbook()
